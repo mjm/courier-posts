@@ -12,3 +12,10 @@ services:
 - postgresql
 addons:
   postgresql: '9.6'
+deploy:
+  provider: heroku
+  api_key:
+    secure: xfDnXrUeZO8O7NBJ/T+5R5QWyywUw1m0QFl2RTfhY0/M2CmoHY3PPxk5GIYrvhQTPgQs217CQKYSmjh1DztRf+Km0v2V+Qi1fUDbI3pzRisywDsIMgybTMalqSEYllz87HU5RTjZcEZ46Ux01WAeVzDoEu6W58rqJt8N2PQpgbFaO7u+D6pPRC0ka7E94ShZlyAKXPLMrcOq3lb0rp2YIVQjdWMB8jg1OesEkA6YHVwIzUpbOrfOm0Bp9HQ49XHKdH/FXTW5Fv3y5eHrIDzmGKSpUgzMTP3FxfIqlBSajw3UHvcFJ/XMu5IkT40lTomgrAYm1yYp6lXLsVTimDie8kuOPLBDQxHWpwj/BiZsxrAtAHXuS7p9T3JkCqGdICF5D0Bgq8Y4bzuGUa1GtNfgtbs5lFNzOoV7EVba1tx6d+KroHZNmqgzAet1EzrHJzcLwqppKP3Jl4N97x+bBQ55iHSfWHAN+duKGWWpswezpJintTuALZZsHrjgF9DZX1QVuz9shj5DrMd5j+tzNuQaTRoIKIpwRKW0652dPKm4Hjb4MtQMgj/z9cioB9XAt5ybI17HgrObLN8ezw833Q58qeDKsXsgp9Rj/GsMOtCa/Ow4Dz+iZARLcyE5hpwgfWhELBbNaerRELtWyVkm9qPEd8P/Weekvzi3oKdbDw+XFIk=
+  app: courier-posts
+  on:
+    repo: mjm/courier-posts
