@@ -96,6 +96,15 @@ RSpec.describe PostsHandler do
         end
       end
 
+      context 'and the auth token is for another microservice' do
+        let(:token) { Token.new('sub' => 'courier-feeds', 'roles' => ['service']) }
+        let(:env) { { token: token } }
+
+        it 'returns a successful response' do
+          expect(response).not_to be_a_twirp_error :permission_denied
+        end
+      end
+
       context 'and the token matches the user id in the request' do
         let(:env) { { token: token } }
 

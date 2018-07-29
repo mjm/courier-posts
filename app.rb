@@ -11,7 +11,7 @@ class PostsHandler
   end
 
   def import_post(req, env)
-    require_user env, id: req.user_id do
+    require_user env, id: req.user_id, allow_service: true do
       post = Post.import(req.user_id, req.post.to_h)
       post.to_proto
     end
