@@ -5,7 +5,8 @@ class PostsHandler
 
   def get_user_posts(req, env)
     require_user env, id: req.user_id do
-      {}
+      posts = Post.by_user(req.user_id).recent.all
+      { posts: posts.map(&:to_proto) }
     end
   end
 end

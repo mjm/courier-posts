@@ -27,15 +27,41 @@ RSpec.describe PostsHandler do
 
       context 'and the token matches the user whose posts were requested' do
         let(:env) { { token: token } }
+        let(:posts) { response.posts }
 
         context 'when there are no posts' do
           it 'returns an empty list of posts' do
-            expect(response.to_hash).to match(posts: [])
+            expect(posts).to eq []
           end
         end
 
         context 'when there are some posts' do
-          it 'returns a list of the posts in the reverse order of when they were added'
+          before do
+            Post.create(user_id: 123, id: '123', feed_id: 1, content_text: 'Foo', url: 'https://example.com/123')
+            Post.create(user_id: 123, id: '234', feed_id: 1, content_html: '<p>Foo</p>', url: 'https://example.com/234')
+            Post.create(user_id: 234, id: '234', feed_id: 1, content_text: 'Foo', url: 'https://example.com/234')
+          end
+
+          it 'returns a list of the posts for the user in the reverse order of when they were added' do
+            expect(posts.map(&:to_h)).to match [
+              {
+                id: '234',
+                feed_id: 1,
+                content_html: '<p>Foo</p>',
+                content_text: '',
+                url: 'https://example.com/234',
+                title: ''
+              },
+              {
+                id: '123',
+                feed_id: 1,
+                content_html: '',
+                content_text: 'Foo',
+                url: 'https://example.com/123',
+                title: ''
+              }
+            ]
+          end
         end
       end
     end

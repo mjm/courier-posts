@@ -3,7 +3,7 @@ require 'base64'
 require 'courier/rspec'
 
 ENV['RACK_ENV'] = 'test'
-ENV['DATABASE_URL'] = 'postgres:///courier_feeds_test'
+ENV['DATABASE_URL'] = 'postgres:///courier_posts_test'
 ENV['JWT_SECRET'] = Base64.encode64(Random.new.bytes(32))
 ENV['SESSION_SECRET'] = 'super secret'
 
