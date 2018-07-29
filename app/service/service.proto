@@ -1,0 +1,68 @@
+syntax = "proto3";
+package courier;
+
+import "google/protobuf/timestamp.proto";
+
+/// Service for working with feeds.
+service Feeds {
+  /// Gets a list of all of the feeds registered in the service.
+  rpc GetFeeds(ListFeedsRequest) returns (FeedList);
+  /// Gets a list of the feeds registered to a particular user.
+  rpc GetUserFeeds(ListUserFeedsRequest) returns (FeedList);
+  /// Registers a new feed on behalf of a user.
+  rpc RegisterFeed(RegisterFeedRequest) returns (Feed);
+  /// Triggers a background job to refresh an individual feed.
+  rpc RefreshFeed(RefreshFeedRequest) returns (JobStatus);
+}
+
+/**
+ * Request message for listing all feeds.
+ *
+ * This API currently takes no parameters.
+ */
+message ListFeedsRequest {}
+/// Request message for listing feeds for a user.
+message ListUserFeedsRequest {
+  /// The ID of the user whose feeds should be listed.
+  int32 user_id = 1;
+}
+/// Request message for registering a new feed.
+message RegisterFeedRequest {
+  /// The ID of the user registering the feed.
+  int32 user_id = 1;
+  /// The URL of the feed to register.
+  string url = 2;
+}
+/// Request message for refreshing a feed.
+message RefreshFeedRequest {
+  /// The ID of the feed to refresh.
+  int32 feed_id = 1;
+}
+
+/// Message describing a feed registered in the service.
+message Feed {
+  /// The ID of the feed.
+  int32 id = 1;
+  /// The URL of the feed.
+  string url = 2;
+  /// Timestamp for when the feed was first registered by any user.
+  google.protobuf.Timestamp created_at = 3;
+  /// Timestamp for the last time the feed record was changed.
+  google.protobuf.Timestamp updated_at = 4;
+  /// Timestamp for last time the feed was checked for new content.
+  google.protobuf.Timestamp refreshed_at = 5;
+}
+
+/// Message containing a list of multiple Feeds.
+message FeedList {
+  /// The feeds in the list.
+  repeated Feed feeds = 1;
+}
+
+/// Message describing a background job.
+message JobStatus {
+  /// Basic description of the current status of the job (e.g. 'refreshing').
+  string status = 1;
+  /// Unique identifier of the background job.
+  string job_id = 2;
+}
