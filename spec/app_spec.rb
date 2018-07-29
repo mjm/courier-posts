@@ -119,6 +119,50 @@ RSpec.describe PostsHandler do
             )
           end
         end
+
+        context 'when the post has been imported before' do
+          before do
+            Post.import(
+              123,
+              id: 'abc',
+              feed_id: 234,
+              content_text: 'Bar',
+              title: 'An old title',
+              url: 'https://example.com/123'
+            )
+          end
+
+          it 'does not create a new post' do
+            expect { response }.not_to(change { Post.count })
+          end
+
+          it 'updates the attributes of the existing post' do
+            response
+            post = Post[id: 'abc', feed_id: 234, user_id: 123]
+            expect(post).to have_attributes(
+              content_text: 'Foo',
+              title: '',
+              url: 'https://example.com/abc'
+            )
+          end
+
+          it 'does not update the created_at time' do
+            expect { response }.not_to(change do
+              Post[id: 'abc', feed_id: 234, user_id: 123].created_at
+            end)
+          end
+
+          it 'returns a description of the updated post' do
+            expect(response.to_h).to match(
+              id: 'abc',
+              feed_id: 234,
+              content_html: '',
+              content_text: 'Foo',
+              url: 'https://example.com/abc',
+              title: ''
+            )
+          end
+        end
       end
     end
   end
