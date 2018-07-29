@@ -66,4 +66,60 @@ RSpec.describe PostsHandler do
       end
     end
   end
+
+  describe '#import_post' do
+    let(:request) do
+      {
+        user_id: 123,
+        post: Courier::Post.new(
+          id: 'abc',
+          feed_id: 234,
+          content_text: 'Foo',
+          url: 'https://example.com/abc'
+        )
+      }
+    end
+    let(:response) { subject.call_rpc(:ImportPost, request, env) }
+
+    context 'when no auth token is provided' do
+      it 'returns an unauthenticated response' do
+        expect(response).to be_a_twirp_error :unauthenticated
+      end
+    end
+
+    context 'when an auth token is provided' do
+      context 'and the token does not match the user id in the request' do
+        let(:env) { { token: other_token } }
+
+        it 'returns a forbidden response' do
+          expect(response).to be_a_twirp_error :permission_denied
+        end
+      end
+
+      context 'and the token matches the user id in the request' do
+        let(:env) { { token: token } }
+
+        it 'returns a successful response' do
+          expect(response).not_to be_a_twirp_error
+        end
+
+        context 'when the post does not already exist' do
+          it 'creates a new post' do
+            expect { response }.to change { Post.count }.by 1
+          end
+
+          it 'returns a description of the imported post' do
+            expect(response.to_h).to match(
+              id: 'abc',
+              feed_id: 234,
+              content_html: '',
+              content_text: 'Foo',
+              url: 'https://example.com/abc',
+              title: ''
+            )
+          end
+        end
+      end
+    end
+  end
 end

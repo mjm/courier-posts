@@ -12,6 +12,13 @@ class Post < Sequel::Model(DB[:posts])
     end
   end
 
+  class << self
+    def import(user_id, attrs)
+      attrs = attrs.dup.merge(user_id: user_id)
+      create(attrs)
+    end
+  end
+
   def to_proto
     Courier::Post.new(
       id: id,

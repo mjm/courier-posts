@@ -8,7 +8,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
   add_message "courier.ListUserPostsRequest" do
     optional :user_id, :int32, 1
   end
-  add_message "courier.CreatePostRequest" do
+  add_message "courier.ImportPostRequest" do
     optional :user_id, :int32, 1
     optional :post, :message, 2, "courier.Post"
   end
@@ -27,7 +27,7 @@ end
 
 module Courier
   ListUserPostsRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("courier.ListUserPostsRequest").msgclass
-  CreatePostRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("courier.CreatePostRequest").msgclass
+  ImportPostRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("courier.ImportPostRequest").msgclass
   PostList = Google::Protobuf::DescriptorPool.generated_pool.lookup("courier.PostList").msgclass
   Post = Google::Protobuf::DescriptorPool.generated_pool.lookup("courier.Post").msgclass
 end

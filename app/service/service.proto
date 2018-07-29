@@ -8,7 +8,8 @@ service Posts {
   /// Gets a list of posts for a particular user.
   rpc GetUserPosts(ListUserPostsRequest) returns (PostList);
 
-  //rpc CreatePost(CreatePostRequest) returns (Post);
+  /// Imports a post from a user's feed.
+  rpc ImportPost(ImportPostRequest) returns (Post);
 }
 
 /// Request message for listing posts for a user.
@@ -17,8 +18,14 @@ message ListUserPostsRequest {
   int32 user_id = 1;
 }
 
-message CreatePostRequest {
+/**
+ * Request message for importing a user post.
+ * A post may be imported multiple times, presumably each time the feed is scraped while the post is present in the feed. If the post has been imported before, it will be updated.
+ */
+message ImportPostRequest {
+  /// The ID of the user whose feed the post is imported from.
   int32 user_id = 1;
+  /// The post information to import.
   Post post = 2;
 }
 

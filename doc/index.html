@@ -179,7 +179,7 @@
             <ul>
               
                 <li>
-                  <a href="#courier.CreatePostRequest"><span class="badge">M</span>CreatePostRequest</a>
+                  <a href="#courier.ImportPostRequest"><span class="badge">M</span>ImportPostRequest</a>
                 </li>
               
                 <li>
@@ -216,8 +216,8 @@
       <p></p>
 
       
-        <h3 id="courier.CreatePostRequest">CreatePostRequest</h3>
-        <p></p>
+        <h3 id="courier.ImportPostRequest">ImportPostRequest</h3>
+        <p>Request message for importing a user post.</p><p>A post may be imported multiple times, presumably each time the feed is scraped while the post is present in the feed. If the post has been imported before, it will be updated.</p>
 
         
           <table class="field-table">
@@ -230,14 +230,14 @@
                   <td>user_id</td>
                   <td><a href="#int32">int32</a></td>
                   <td></td>
-                  <td><p> </p></td>
+                  <td><p>The ID of the user whose feed the post is imported from. </p></td>
                 </tr>
               
                 <tr>
                   <td>post</td>
                   <td><a href="#courier.Post">Post</a></td>
                   <td></td>
-                  <td><p> </p></td>
+                  <td><p>The post information to import. </p></td>
                 </tr>
               
             </tbody>
@@ -370,6 +370,13 @@ Assigned by the feed author. If a post is updated, its ID should not change. </p
                 <td><a href="#courier.ListUserPostsRequest">ListUserPostsRequest</a></td>
                 <td><a href="#courier.PostList">PostList</a></td>
                 <td><p>Gets a list of posts for a particular user.</p></td>
+              </tr>
+            
+              <tr>
+                <td>ImportPost</td>
+                <td><a href="#courier.ImportPostRequest">ImportPostRequest</a></td>
+                <td><a href="#courier.Post">Post</a></td>
+                <td><p>Imports a post from a user&#39;s feed.</p></td>
               </tr>
             
           </tbody>

@@ -7,6 +7,7 @@ module Courier
     package 'courier'
     service 'Posts'
     rpc :GetUserPosts, ListUserPostsRequest, PostList, :ruby_method => :get_user_posts
+    rpc :ImportPost, ImportPostRequest, Post, :ruby_method => :import_post
   end
 
   class PostsClient < Twirp::Client
