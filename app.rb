@@ -2,6 +2,12 @@ require 'config/environment'
 
 class PostsHandler
   include Courier::Authorization
+
+  def get_user_posts(req, env)
+    require_user env, id: req.user_id do
+      {}
+    end
+  end
 end
 
 class DocHandler
@@ -20,7 +26,6 @@ class DocHandler
   end
 end
 
-__END__
 App = Courier::PostsService.new(PostsHandler.new)
 
 App.before do |rack_env, env|
