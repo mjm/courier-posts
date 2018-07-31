@@ -37,15 +37,16 @@ RSpec.describe PostsHandler do
 
         context 'when there are some posts' do
           before do
-            Post.create(user_id: 123, id: '123', feed_id: 1, content_text: 'Foo', url: 'https://example.com/123')
-            Post.create(user_id: 123, id: '234', feed_id: 1, content_html: '<p>Foo</p>', url: 'https://example.com/234')
-            Post.create(user_id: 234, id: '234', feed_id: 1, content_text: 'Foo', url: 'https://example.com/234')
+            Post.create(user_id: 123, item_id: '123', feed_id: 1, content_text: 'Foo', url: 'https://example.com/123')
+            Post.create(user_id: 123, item_id: '234', feed_id: 1, content_html: '<p>Foo</p>', url: 'https://example.com/234')
+            Post.create(user_id: 234, item_id: '234', feed_id: 1, content_text: 'Foo', url: 'https://example.com/234')
           end
 
           it 'returns a list of the posts for the user in the reverse order of when they were added' do
             expect(posts.map(&:to_h)).to match [
               {
-                id: '234',
+                id: a_value > 0,
+                item_id: '234',
                 feed_id: 1,
                 content_html: '<p>Foo</p>',
                 content_text: '',
@@ -53,7 +54,8 @@ RSpec.describe PostsHandler do
                 title: ''
               },
               {
-                id: '123',
+                id: a_value > 0,
+                item_id: '123',
                 feed_id: 1,
                 content_html: '',
                 content_text: 'Foo',
@@ -72,7 +74,7 @@ RSpec.describe PostsHandler do
       {
         user_id: 123,
         post: Courier::Post.new(
-          id: 'abc',
+          item_id: 'abc',
           feed_id: 234,
           content_text: 'Foo',
           url: 'https://example.com/abc'
@@ -119,7 +121,8 @@ RSpec.describe PostsHandler do
 
           it 'returns a description of the imported post' do
             expect(response.to_h).to match(
-              id: 'abc',
+              id: a_value > 0,
+              item_id: 'abc',
               feed_id: 234,
               content_html: '',
               content_text: 'Foo',
@@ -127,13 +130,18 @@ RSpec.describe PostsHandler do
               title: ''
             )
           end
+
+          it 'enqueues a job to translate the post into a tweet' do
+            post_id = response.id
+            expect(TranslateTweetWorker).to have_enqueued_sidekiq_job(post_id)
+          end
         end
 
         context 'when the post has been imported before' do
-          before do
+          let!(:post) do
             Post.import(
               123,
-              id: 'abc',
+              item_id: 'abc',
               feed_id: 234,
               content_text: 'Bar',
               title: 'An old title',
@@ -147,8 +155,7 @@ RSpec.describe PostsHandler do
 
           it 'updates the attributes of the existing post' do
             response
-            post = Post[id: 'abc', feed_id: 234, user_id: 123]
-            expect(post).to have_attributes(
+            expect(post.refresh).to have_attributes(
               content_text: 'Foo',
               title: '',
               url: 'https://example.com/abc'
@@ -157,13 +164,14 @@ RSpec.describe PostsHandler do
 
           it 'does not update the created_at time' do
             expect { response }.not_to(change do
-              Post[id: 'abc', feed_id: 234, user_id: 123].created_at
+              post.refresh.created_at
             end)
           end
 
           it 'returns a description of the updated post' do
             expect(response.to_h).to match(
-              id: 'abc',
+              id: post.id,
+              item_id: 'abc',
               feed_id: 234,
               content_html: '',
               content_text: 'Foo',

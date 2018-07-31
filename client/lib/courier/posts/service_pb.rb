@@ -16,7 +16,8 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     repeated :posts, :message, 1, "courier.Post"
   end
   add_message "courier.Post" do
-    optional :id, :string, 1
+    optional :id, :int64, 7
+    optional :item_id, :string, 1
     optional :feed_id, :int32, 2
     optional :content_html, :string, 3
     optional :content_text, :string, 4
