@@ -194,6 +194,10 @@
                   <a href="#courier.PostList"><span class="badge">M</span>PostList</a>
                 </li>
               
+                <li>
+                  <a href="#courier.PostTweet"><span class="badge">M</span>PostTweet</a>
+                </li>
+              
               
               
               
@@ -329,6 +333,13 @@ Assigned by the feed author. If a post is updated, its ID should not change. </p
                   <td><p>The URL of the post. In many feeds, this will be the same as the id, but it does not have to be. </p></td>
                 </tr>
               
+                <tr>
+                  <td>tweets</td>
+                  <td><a href="#courier.PostTweet">PostTweet</a></td>
+                  <td>repeated</td>
+                  <td><p>The tweets that contain the content of this post. </p></td>
+                </tr>
+              
             </tbody>
           </table>
         
@@ -350,6 +361,43 @@ Assigned by the feed author. If a post is updated, its ID should not change. </p
                   <td><a href="#courier.Post">Post</a></td>
                   <td>repeated</td>
                   <td><p>The posts in the list. </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
+        <h3 id="courier.PostTweet">PostTweet</h3>
+        <p>A tweet that was translated from a post.</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>post_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p> </p></td>
+                </tr>
+              
+                <tr>
+                  <td>body</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p> </p></td>
                 </tr>
               
             </tbody>

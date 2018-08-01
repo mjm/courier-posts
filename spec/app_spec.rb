@@ -51,7 +51,8 @@ RSpec.describe PostsHandler do
                 content_html: '<p>Foo</p>',
                 content_text: '',
                 url: 'https://example.com/234',
-                title: ''
+                title: '',
+                tweets: []
               },
               {
                 id: a_value > 0,
@@ -60,7 +61,8 @@ RSpec.describe PostsHandler do
                 content_html: '',
                 content_text: 'Foo',
                 url: 'https://example.com/123',
-                title: ''
+                title: '',
+                tweets: []
               }
             ]
           end
@@ -127,7 +129,8 @@ RSpec.describe PostsHandler do
               content_html: '',
               content_text: 'Foo',
               url: 'https://example.com/abc',
-              title: ''
+              title: '',
+              tweets: []
             )
           end
 
@@ -176,7 +179,8 @@ RSpec.describe PostsHandler do
               content_html: '',
               content_text: 'Foo',
               url: 'https://example.com/abc',
-              title: ''
+              title: '',
+              tweets: []
             )
           end
         end

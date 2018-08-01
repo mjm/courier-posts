@@ -23,6 +23,12 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     optional :content_text, :string, 4
     optional :title, :string, 5
     optional :url, :string, 6
+    repeated :tweets, :message, 9, "courier.PostTweet"
+  end
+  add_message "courier.PostTweet" do
+    optional :id, :int64, 1
+    optional :post_id, :int64, 2
+    optional :body, :string, 3
   end
 end
 
@@ -31,4 +37,5 @@ module Courier
   ImportPostRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("courier.ImportPostRequest").msgclass
   PostList = Google::Protobuf::DescriptorPool.generated_pool.lookup("courier.PostList").msgclass
   Post = Google::Protobuf::DescriptorPool.generated_pool.lookup("courier.Post").msgclass
+  PostTweet = Google::Protobuf::DescriptorPool.generated_pool.lookup("courier.PostTweet").msgclass
 end

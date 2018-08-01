@@ -9,7 +9,7 @@ class Post < Sequel::Model(DB[:posts])
     end
 
     def recent
-      reverse(:created_at).limit(20)
+      eager(:tweets).reverse(:created_at).limit(20)
     end
   end
 
@@ -37,6 +37,7 @@ class Post < Sequel::Model(DB[:posts])
       time = dataset.current_datetime
       insert_attrs = attrs.dup
       insert_attrs.delete(:id)
+      insert_attrs.delete(:tweets)
       insert_attrs.merge(
         user_id: user_id,
         created_at: time, # sidestepping model code, so we need to set
@@ -53,7 +54,8 @@ class Post < Sequel::Model(DB[:posts])
       content_html: content_html,
       content_text: content_text,
       url: url,
-      title: title
+      title: title,
+      tweets: tweets.map(&:to_proto)
     )
   end
 end

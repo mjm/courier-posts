@@ -57,4 +57,13 @@ message Post {
   string title = 5;
   /// The URL of the post. In many feeds, this will be the same as the id, but it does not have to be.
   string url = 6;
+  /// The tweets that contain the content of this post.
+  repeated PostTweet tweets = 9;
+}
+
+/// A tweet that was translated from a post.
+message PostTweet {
+  int64 id = 1;
+  int64 post_id = 2;
+  string body = 3;
 }
