@@ -8,6 +8,9 @@ service Posts {
   /// Gets a list of posts for a particular user.
   rpc GetUserPosts(ListUserPostsRequest) returns (PostList);
 
+  /// Gets a single post.
+  rpc GetPost(GetPostRequest) returns (Post);
+
   /// Imports a post from a user's feed.
   rpc ImportPost(ImportPostRequest) returns (Post);
 }
@@ -16,6 +19,12 @@ service Posts {
 message ListUserPostsRequest {
   /// The ID of the users whose posts should be listed.
   int32 user_id = 1;
+}
+
+/// Request message for getting a single post.
+message GetPostRequest {
+  /// The ID of the post to get.
+  int64 id = 1;
 }
 
 /**

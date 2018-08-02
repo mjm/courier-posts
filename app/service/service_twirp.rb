@@ -7,6 +7,7 @@ module Courier
     package 'courier'
     service 'Posts'
     rpc :GetUserPosts, ListUserPostsRequest, PostList, :ruby_method => :get_user_posts
+    rpc :GetPost, GetPostRequest, Post, :ruby_method => :get_post
     rpc :ImportPost, ImportPostRequest, Post, :ruby_method => :import_post
   end
 

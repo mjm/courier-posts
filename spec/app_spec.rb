@@ -71,6 +71,59 @@ RSpec.describe PostsHandler do
     end
   end
 
+  describe '#get_post' do
+    let(:post) do
+      Post.import(
+        123,
+        item_id: 'abc',
+        feed_id: 234,
+        content_text: 'Bar',
+        title: 'An old title',
+        url: 'https://example.com/123'
+      )
+    end
+    let(:request) { { id: post.id } }
+    let(:response) { subject.call_rpc(:GetPost, request, env) }
+
+    context 'when no auth token is provided' do
+      it 'returns an unauthenticated error' do
+        expect(response).to be_a_twirp_error :unauthenticated
+      end
+    end
+
+    context 'when a token for a different user is provided' do
+      let(:env) { { token: other_token } }
+
+      it 'returns a not found error' do
+        expect(response).to be_a_twirp_error :not_found
+      end
+    end
+
+    context 'when the post does not exist' do
+      let(:env) { { token: token } }
+      let(:request) { { id: post.id + 1 } }
+
+      it 'returns a not found error' do
+        expect(response).to be_a_twirp_error :not_found
+      end
+    end
+
+    context 'when an auth token matching the post is provided' do
+      let(:env) { { token: token } }
+
+      it 'returns a description of the post' do
+        expect(response).to eq Courier::Post.new(
+          id: post.id,
+          item_id: 'abc',
+          feed_id: 234,
+          content_text: 'Bar',
+          title: 'An old title',
+          url: 'https://example.com/123'
+        )
+      end
+    end
+  end
+
   describe '#import_post' do
     let(:request) do
       {
