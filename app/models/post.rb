@@ -8,8 +8,14 @@ class Post < Sequel::Model(DB[:posts])
       where(user_id: user_id)
     end
 
+    eager :with_tweets, :tweets
+    order :most_recent_first, Sequel.desc(:created_at)
+    limit :top_twenty, 20
+
     def recent
-      eager(:tweets).reverse(:created_at).limit(20)
+      most_recent_first
+        .with_tweets
+        .top_twenty
     end
   end
 
