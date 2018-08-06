@@ -7,3 +7,5 @@ Courier::Service.configure do
   database
   background_jobs
 end
+
+DB.extension :pg_enum

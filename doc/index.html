@@ -179,6 +179,10 @@
             <ul>
               
                 <li>
+                  <a href="#courier.CancelTweetRequest"><span class="badge">M</span>CancelTweetRequest</a>
+                </li>
+              
+                <li>
                   <a href="#courier.GetPostRequest"><span class="badge">M</span>GetPostRequest</a>
                 </li>
               
@@ -203,6 +207,10 @@
                 </li>
               
               
+                <li>
+                  <a href="#courier.PostTweet.Status"><span class="badge">E</span>PostTweet.Status</a>
+                </li>
+              
               
               
                 <li>
@@ -223,6 +231,29 @@
       </div>
       <p></p>
 
+      
+        <h3 id="courier.CancelTweetRequest">CancelTweetRequest</h3>
+        <p>Request message for canceling a tweet from being posted.</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>The ID of the tweet to cancel. </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
       
         <h3 id="courier.GetPostRequest">GetPostRequest</h3>
         <p>Request message for getting a single post.</p>
@@ -427,6 +458,13 @@ Assigned by the feed author. If a post is updated, its ID should not change. </p
                   <td><p>The body text of the tweet. </p></td>
                 </tr>
               
+                <tr>
+                  <td>status</td>
+                  <td><a href="#courier.PostTweet.Status">PostTweet.Status</a></td>
+                  <td></td>
+                  <td><p>The status of the tweet. </p></td>
+                </tr>
+              
             </tbody>
           </table>
         
@@ -434,6 +472,35 @@ Assigned by the feed author. If a post is updated, its ID should not change. </p
         
       
 
+      
+        <h3 id="courier.PostTweet.Status">PostTweet.Status</h3>
+        <p>The status of a tweet.</p>
+        <table class="enum-table">
+          <thead>
+            <tr><td>Name</td><td>Number</td><td>Description</td></tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td>DRAFT</td>
+                <td>0</td>
+                <td><p>The tweet is intended to be posted but it has not been yet.</p></td>
+              </tr>
+            
+              <tr>
+                <td>CANCELED</td>
+                <td>1</td>
+                <td><p>The user decided not to post the tweet.</p></td>
+              </tr>
+            
+              <tr>
+                <td>POSTED</td>
+                <td>2</td>
+                <td><p>The tweet has already been posted to Twitter.</p></td>
+              </tr>
+            
+          </tbody>
+        </table>
       
 
       
@@ -466,6 +533,13 @@ Assigned by the feed author. If a post is updated, its ID should not change. </p
                 <td><a href="#courier.ImportPostRequest">ImportPostRequest</a></td>
                 <td><a href="#courier.Post">Post</a></td>
                 <td><p>Imports a post from a user&#39;s feed.</p></td>
+              </tr>
+            
+              <tr>
+                <td>CancelTweet</td>
+                <td><a href="#courier.CancelTweetRequest">CancelTweetRequest</a></td>
+                <td><a href="#courier.PostTweet">PostTweet</a></td>
+                <td><p>Cancels a tweet, preventing it from being posted to Twitter automatically.</p></td>
               </tr>
             
           </tbody>

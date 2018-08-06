@@ -9,6 +9,7 @@ module Courier
     rpc :GetUserPosts, ListUserPostsRequest, PostList, :ruby_method => :get_user_posts
     rpc :GetPost, GetPostRequest, Post, :ruby_method => :get_post
     rpc :ImportPost, ImportPostRequest, Post, :ruby_method => :import_post
+    rpc :CancelTweet, CancelTweetRequest, PostTweet, :ruby_method => :cancel_tweet
   end
 
   class PostsClient < Twirp::Client

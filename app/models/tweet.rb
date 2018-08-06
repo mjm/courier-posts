@@ -5,7 +5,8 @@ class Tweet < Sequel::Model(DB[:tweets])
     Courier::PostTweet.new(
       id: id,
       post_id: post_id,
-      body: body
+      body: body,
+      status: status
     )
   end
 end

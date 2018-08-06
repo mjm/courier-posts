@@ -15,6 +15,9 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     optional :user_id, :int32, 1
     optional :post, :message, 2, "courier.Post"
   end
+  add_message "courier.CancelTweetRequest" do
+    optional :id, :int64, 1
+  end
   add_message "courier.PostList" do
     repeated :posts, :message, 1, "courier.Post"
   end
@@ -32,6 +35,12 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     optional :id, :int64, 1
     optional :post_id, :int64, 2
     optional :body, :string, 3
+    optional :status, :enum, 4, "courier.PostTweet.Status"
+  end
+  add_enum "courier.PostTweet.Status" do
+    value :DRAFT, 0
+    value :CANCELED, 1
+    value :POSTED, 2
   end
 end
 
@@ -39,7 +48,9 @@ module Courier
   ListUserPostsRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("courier.ListUserPostsRequest").msgclass
   GetPostRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("courier.GetPostRequest").msgclass
   ImportPostRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("courier.ImportPostRequest").msgclass
+  CancelTweetRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("courier.CancelTweetRequest").msgclass
   PostList = Google::Protobuf::DescriptorPool.generated_pool.lookup("courier.PostList").msgclass
   Post = Google::Protobuf::DescriptorPool.generated_pool.lookup("courier.Post").msgclass
   PostTweet = Google::Protobuf::DescriptorPool.generated_pool.lookup("courier.PostTweet").msgclass
+  PostTweet::Status = Google::Protobuf::DescriptorPool.generated_pool.lookup("courier.PostTweet.Status").enummodule
 end
