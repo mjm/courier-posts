@@ -1,6 +1,10 @@
 class Tweet < Sequel::Model(DB[:tweets])
   many_to_one :post
 
+  def draft?
+    status == 'DRAFT'
+  end
+
   def to_proto
     Courier::PostTweet.new(
       id: id,

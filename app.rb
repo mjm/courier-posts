@@ -44,6 +44,8 @@ class PostsHandler
       return Twirp::Error.not_found 'No tweet found' unless tweet
 
       require_user env, id: tweet.post.user_id do
+        return Twirp::Error.failed_precondition 'Tweet is not a draft' unless tweet.draft?
+
         tweet.update body: req.body
         tweet.to_proto
       end

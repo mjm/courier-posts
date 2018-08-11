@@ -344,6 +344,16 @@ RSpec.describe PostsHandler do
             body: 'bar foo'
           )
         end
+
+        it 'rejects the request if the tweet has been canceled' do
+          tweet.update status: 'CANCELED'
+          expect(response).to be_a_twirp_error :failed_precondition
+        end
+
+        it 'rejects the request if the tweet has already been posted' do
+          tweet.update status: 'POSTED'
+          expect(response).to be_a_twirp_error :failed_precondition
+        end
       end
     end
   end
