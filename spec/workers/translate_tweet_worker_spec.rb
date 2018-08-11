@@ -1,6 +1,7 @@
 RSpec.describe TranslateTweetWorker do
+  let(:tweets) { Courier::TranslatedTweetList.new(tweets: [tweet]) }
   let(:tweet) { Courier::TranslatedTweet.new(body: 'This is a tweet') }
-  let(:response) { double(data: tweet) }
+  let(:response) { double(data: tweets) }
   let(:translator) { instance_double(Courier::TranslatorClient) }
   before do
     allow(Courier::TranslatorClient).to receive(:connect) { translator }

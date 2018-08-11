@@ -8,7 +8,9 @@ class TranslateTweetWorker
     return unless post.tweets.empty?
 
     response = translator_client.translate(content_html: post.content_html)
-    post.add_tweet(body: response.data.body)
+    response.data.tweets.each do |tweet|
+      post.add_tweet(body: tweet.body)
+    end
   end
 
   private
