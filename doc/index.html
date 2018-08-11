@@ -206,6 +206,10 @@
                   <a href="#courier.PostTweet"><span class="badge">M</span>PostTweet</a>
                 </li>
               
+                <li>
+                  <a href="#courier.UpdateTweetRequest"><span class="badge">M</span>UpdateTweetRequest</a>
+                </li>
+              
               
                 <li>
                   <a href="#courier.PostTweet.Status"><span class="badge">E</span>PostTweet.Status</a>
@@ -471,6 +475,36 @@ Assigned by the feed author. If a post is updated, its ID should not change. </p
 
         
       
+        <h3 id="courier.UpdateTweetRequest">UpdateTweetRequest</h3>
+        <p>Request message for updating the content of a tweet.</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>The ID of the tweet to update. </p></td>
+                </tr>
+              
+                <tr>
+                  <td>body</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>The new body of the tweet. </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+        
+
+        
+      
 
       
         <h3 id="courier.PostTweet.Status">PostTweet.Status</h3>
@@ -540,6 +574,13 @@ Assigned by the feed author. If a post is updated, its ID should not change. </p
                 <td><a href="#courier.CancelTweetRequest">CancelTweetRequest</a></td>
                 <td><a href="#courier.PostTweet">PostTweet</a></td>
                 <td><p>Cancels a tweet, preventing it from being posted to Twitter automatically.</p></td>
+              </tr>
+            
+              <tr>
+                <td>UpdateTweet</td>
+                <td><a href="#courier.UpdateTweetRequest">UpdateTweetRequest</a></td>
+                <td><a href="#courier.PostTweet">PostTweet</a></td>
+                <td><p>Updates the content of a tweet before posting it.</p></td>
               </tr>
             
           </tbody>

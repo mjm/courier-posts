@@ -294,4 +294,57 @@ RSpec.describe PostsHandler do
       end
     end
   end
+
+  describe '#update_tweet' do
+    let(:post) do
+      Post.import(123,
+                  item_id: 'abc', feed_id: 1,
+                  content_text: 'foo', url: 'foo')
+    end
+    let!(:tweet) { post.add_tweet(body: 'foo bar') }
+    let(:request) { { id: tweet.id, body: 'bar foo' } }
+    let(:response) { subject.call_rpc(:UpdateTweet, request, env) }
+
+    context 'when no auth token is provided' do
+      it 'returns an unauthenticated response' do
+        expect(response).to be_a_twirp_error :unauthenticated
+      end
+    end
+
+    context 'when an auth token is provided' do
+      context "and the token does not match the user id of the tweet's post" do
+        let(:env) { { token: other_token } }
+
+        it 'returns a forbidden response' do
+          expect(response).to be_a_twirp_error :permission_denied
+        end
+      end
+
+      context 'and the tweet does not exist' do
+        let(:request) { { id: tweet.id + 1 } }
+        let(:env) { { token: other_token } }
+
+        it 'returns a not found response' do
+          expect(response).to be_a_twirp_error :not_found
+        end
+      end
+
+      context "and the token matches the user id of the tweet's post" do
+        let(:env) { { token: token } }
+
+        it 'updates the body of the tweet' do
+          response
+          expect(tweet.refresh.body).to eq 'bar foo'
+        end
+
+        it 'returns a description of the updated tweet' do
+          expect(response).to eq Courier::PostTweet.new(
+            id: tweet.id,
+            post_id: post.id,
+            body: 'bar foo'
+          )
+        end
+      end
+    end
+  end
 end

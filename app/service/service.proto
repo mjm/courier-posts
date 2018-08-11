@@ -16,6 +16,9 @@ service Posts {
 
   /// Cancels a tweet, preventing it from being posted to Twitter automatically.
   rpc CancelTweet(CancelTweetRequest) returns (PostTweet);
+
+  /// Updates the content of a tweet before posting it.
+  rpc UpdateTweet(UpdateTweetRequest) returns (PostTweet);
 }
 
 /// Request message for listing posts for a user.
@@ -45,6 +48,14 @@ message ImportPostRequest {
 message CancelTweetRequest {
   /// The ID of the tweet to cancel.
   int64 id = 1;
+}
+
+/// Request message for updating the content of a tweet.
+message UpdateTweetRequest {
+  /// The ID of the tweet to update.
+  int64 id = 1;
+  /// The new body of the tweet.
+  string body = 2;
 }
 
 /// Message containing a list of multiple Posts.
