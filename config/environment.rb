@@ -8,4 +8,5 @@ Courier::Service.configure do
   background_jobs
 end
 
+Sequel.default_timezone = :utc
 DB.extension :pg_enum

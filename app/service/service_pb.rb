@@ -3,7 +3,6 @@
 
 require 'google/protobuf'
 
-require 'google/protobuf/timestamp_pb'
 Google::Protobuf::DescriptorPool.generated_pool.build do
   add_message "courier.ListUserPostsRequest" do
     optional :user_id, :int32, 1
@@ -34,6 +33,8 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     optional :title, :string, 5
     optional :url, :string, 6
     repeated :tweets, :message, 9, "courier.PostTweet"
+    optional :published_at, :string, 10
+    optional :modified_at, :string, 11
   end
   add_message "courier.PostTweet" do
     optional :id, :int64, 1

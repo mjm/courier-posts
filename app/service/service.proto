@@ -1,8 +1,6 @@
 syntax = "proto3";
 package courier;
 
-import "google/protobuf/timestamp.proto";
-
 /// Service for working with posts that were scraped from feeds.
 service Posts {
   /// Gets a list of posts for a particular user.
@@ -88,6 +86,10 @@ message Post {
   string url = 6;
   /// The tweets that contain the content of this post.
   repeated PostTweet tweets = 9;
+  /// The date the post was published, as an ISO 8601 date string.
+  string published_at = 10;
+  /// The date the post was last modified, as an ISO 8601 date string.
+  string modified_at = 11;
 }
 
 /// A tweet that was translated from a post.

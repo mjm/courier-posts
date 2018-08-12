@@ -52,6 +52,8 @@ RSpec.describe PostsHandler do
                 content_text: '',
                 url: 'https://example.com/234',
                 title: '',
+                published_at: String,
+                modified_at: String,
                 tweets: []
               },
               {
@@ -62,6 +64,8 @@ RSpec.describe PostsHandler do
                 content_text: 'Foo',
                 url: 'https://example.com/123',
                 title: '',
+                published_at: String,
+                modified_at: String,
                 tweets: []
               }
             ]
@@ -79,7 +83,9 @@ RSpec.describe PostsHandler do
         feed_id: 234,
         content_text: 'Bar',
         title: 'An old title',
-        url: 'https://example.com/123'
+        url: 'https://example.com/123',
+        published_at: '2018-07-20T19:14:38+00:00',
+        modified_at: '2018-07-20T19:14:38+00:00'
       )
     end
     let(:request) { { id: post.id } }
@@ -118,7 +124,9 @@ RSpec.describe PostsHandler do
           feed_id: 234,
           content_text: 'Bar',
           title: 'An old title',
-          url: 'https://example.com/123'
+          url: 'https://example.com/123',
+          published_at: '2018-07-20T19:14:38Z',
+          modified_at: '2018-07-20T19:14:38Z'
         )
       end
     end
@@ -132,7 +140,9 @@ RSpec.describe PostsHandler do
           item_id: 'abc',
           feed_id: 234,
           content_text: 'Foo',
-          url: 'https://example.com/abc'
+          url: 'https://example.com/abc',
+          published_at: '2018-07-20T19:14:38+00:00',
+          modified_at: '2018-07-20T19:14:38+00:00'
         )
       }
     end
@@ -183,6 +193,8 @@ RSpec.describe PostsHandler do
               content_text: 'Foo',
               url: 'https://example.com/abc',
               title: '',
+              published_at: '2018-07-20T19:14:38Z',
+              modified_at: '2018-07-20T19:14:38Z',
               tweets: []
             )
           end
@@ -233,6 +245,8 @@ RSpec.describe PostsHandler do
               content_text: 'Foo',
               url: 'https://example.com/abc',
               title: '',
+              published_at: '2018-07-20T19:14:38Z',
+              modified_at: '2018-07-20T19:14:38Z',
               tweets: []
             )
           end

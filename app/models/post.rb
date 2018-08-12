@@ -1,3 +1,5 @@
+require 'time'
+
 class Post < Sequel::Model(DB[:posts])
   plugin :timestamps, update_on_create: true
 
@@ -44,11 +46,17 @@ class Post < Sequel::Model(DB[:posts])
       insert_attrs = attrs.dup
       insert_attrs.delete(:id)
       insert_attrs.delete(:tweets)
-      insert_attrs.merge(
+      insert_attrs.merge!(
         user_id: user_id,
         created_at: time, # sidestepping model code, so we need to set
         updated_at: time  # these manually
       )
+      %i[published_at modified_at].each do |field|
+        if insert_attrs.key?(field) && insert_attrs[field].is_a?(String)
+          insert_attrs[field] = Time.iso8601(insert_attrs[field])
+        end
+      end
+      insert_attrs
     end
   end
 
@@ -61,6 +69,8 @@ class Post < Sequel::Model(DB[:posts])
       content_text: content_text,
       url: url,
       title: title,
+      published_at: published_at.getutc.iso8601,
+      modified_at: modified_at.getutc.iso8601,
       tweets: tweets.map(&:to_proto)
     )
   end

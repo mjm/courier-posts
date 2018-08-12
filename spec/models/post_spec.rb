@@ -7,6 +7,8 @@ RSpec.describe Post do
                   content_html: '',
                   content_text: 'Foo',
                   title: '',
+                  published_at: '2018-07-20T19:14:38+00:00',
+                  modified_at: '2018-07-20T19:14:38+00:00',
                   url: 'https://example.com/abc')
     end
 
@@ -23,6 +25,8 @@ RSpec.describe Post do
           content_html: '',
           content_text: 'Foo',
           url: 'https://example.com/abc',
+          published_at: Time,
+          modified_at: Time,
           title: ''
         )
       end
@@ -40,7 +44,9 @@ RSpec.describe Post do
                     feed_id: 234,
                     content_text: 'Bar',
                     title: 'An old title',
-                    url: 'https://example.com/123')
+                    url: 'https://example.com/123',
+                    published_at: '2018-07-20T19:14:38+00:00',
+                    modified_at: '2018-07-20T19:14:38+00:00')
       end
 
       it 'does not create a new post' do
@@ -70,7 +76,9 @@ RSpec.describe Post do
           content_html: '',
           content_text: 'Foo',
           url: 'https://example.com/abc',
-          title: ''
+          title: '',
+          published_at: Time,
+          modified_at: Time
         )
       end
     end
@@ -84,7 +92,9 @@ RSpec.describe Post do
                   content_html: '<p>Foo</p>',
                   content_text: 'Foo',
                   title: 'A title',
-                  url: 'https://example.com/abc')
+                  url: 'https://example.com/abc',
+                  published_at: '2018-07-20T19:14:38+00:00',
+                  modified_at: '2018-07-20T19:14:38+00:00')
     end
 
     before do
@@ -101,6 +111,8 @@ RSpec.describe Post do
         content_text: 'Foo',
         title: 'A title',
         url: 'https://example.com/abc',
+        published_at: '2018-07-20T19:14:38Z',
+        modified_at: '2018-07-20T19:14:38Z',
         tweets: [
           Courier::PostTweet.new(
             id: subject.tweets[0].id,
