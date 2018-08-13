@@ -11,7 +11,7 @@ class Post < Sequel::Model(DB[:posts])
     end
 
     eager :with_tweets, :tweets
-    order :most_recent_first, Sequel.desc(:created_at)
+    order :most_recent_first, Sequel.desc(:published_at)
     limit :top_twenty, 20
 
     def recent

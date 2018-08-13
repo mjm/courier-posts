@@ -37,25 +37,13 @@ RSpec.describe PostsHandler do
 
         context 'when there are some posts' do
           before do
-            Post.create(user_id: 123, item_id: '123', feed_id: 1, content_text: 'Foo', url: 'https://example.com/123')
-            Post.create(user_id: 123, item_id: '234', feed_id: 1, content_html: '<p>Foo</p>', url: 'https://example.com/234')
+            Post.create(user_id: 123, item_id: '123', feed_id: 1, content_text: 'Foo', url: 'https://example.com/123', published_at: '2018-07-20T19:14:38+00:00', modified_at: '2018-07-20T19:14:38+00:00')
+            Post.create(user_id: 123, item_id: '234', feed_id: 1, content_html: '<p>Foo</p>', url: 'https://example.com/234', published_at: '2018-07-20T18:14:38+00:00', modified_at: '2018-07-21T19:14:38+00:00')
             Post.create(user_id: 234, item_id: '234', feed_id: 1, content_text: 'Foo', url: 'https://example.com/234')
           end
 
-          it 'returns a list of the posts for the user in the reverse order of when they were added' do
+          it 'returns a list of the posts for the user in the reverse order of when they were published' do
             expect(posts.map(&:to_h)).to match [
-              {
-                id: a_value > 0,
-                item_id: '234',
-                feed_id: 1,
-                content_html: '<p>Foo</p>',
-                content_text: '',
-                url: 'https://example.com/234',
-                title: '',
-                published_at: String,
-                modified_at: String,
-                tweets: []
-              },
               {
                 id: a_value > 0,
                 item_id: '123',
@@ -63,6 +51,18 @@ RSpec.describe PostsHandler do
                 content_html: '',
                 content_text: 'Foo',
                 url: 'https://example.com/123',
+                title: '',
+                published_at: String,
+                modified_at: String,
+                tweets: []
+              },
+              {
+                id: a_value > 0,
+                item_id: '234',
+                feed_id: 1,
+                content_html: '<p>Foo</p>',
+                content_text: '',
+                url: 'https://example.com/234',
                 title: '',
                 published_at: String,
                 modified_at: String,
