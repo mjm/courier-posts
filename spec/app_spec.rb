@@ -1,17 +1,9 @@
-require 'shared_examples'
-
-RSpec.describe PostsHandler do
+RSpec.describe PostsHandler, rpc: true do
   subject { App }
 
-  Token = Courier::Middleware::JWTToken
-  let(:token) { Token.new('sub' => 'example', 'uid' => 123) }
-  let(:other_token) { Token.new('sub' => 'example2', 'uid' => 124) }
-  let(:env) { { token: token } }
-  let(:request) { {} }
-  let(:response) { subject.call_rpc(name, request, env) }
-
   describe '#get_user_posts' do
-    let(:name) { :GetUserPosts }
+    rpc_method :GetUserPosts
+
     let(:request) { { user_id: 123 } }
     let(:posts) { response.posts }
 
@@ -63,6 +55,8 @@ RSpec.describe PostsHandler do
   end
 
   describe '#get_post' do
+    rpc_method :GetPost
+
     let(:post) do
       Post.import(
         123,
@@ -75,7 +69,6 @@ RSpec.describe PostsHandler do
         modified_at: '2018-07-20T19:14:38+00:00'
       )
     end
-    let(:name) { :GetPost }
     let(:request) { { id: post.id } }
 
     include_examples 'an unauthenticated request'
@@ -111,7 +104,8 @@ RSpec.describe PostsHandler do
   end
 
   describe '#import_post' do
-    let(:name) { :ImportPost }
+    rpc_method :ImportPost
+
     let(:request) do
       {
         user_id: 123,
@@ -208,7 +202,8 @@ RSpec.describe PostsHandler do
 
     context 'when another microservice token is provided' do
       let(:token) do
-        Token.new('sub' => 'courier-feeds', 'roles' => ['service'])
+        Courier::Middleware::JWTToken.new('sub' => 'courier-feeds',
+                                          'roles' => ['service'])
       end
 
       it 'returns a successful response' do
@@ -218,13 +213,14 @@ RSpec.describe PostsHandler do
   end
 
   describe '#cancel_tweet' do
+    rpc_method :CancelTweet
+
     let(:post) do
       Post.import(123,
                   item_id: 'abc', feed_id: 1,
                   content_text: 'foo', url: 'foo')
     end
     let!(:tweet) { post.add_tweet(body: 'foo bar') }
-    let(:name) { :CancelTweet }
     let(:request) { { id: tweet.id } }
 
     include_examples 'an unauthenticated request'
@@ -255,13 +251,14 @@ RSpec.describe PostsHandler do
   end
 
   describe '#update_tweet' do
+    rpc_method :UpdateTweet
+
     let(:post) do
       Post.import(123,
                   item_id: 'abc', feed_id: 1,
                   content_text: 'foo', url: 'foo')
     end
     let!(:tweet) { post.add_tweet(body: 'foo bar') }
-    let(:name) { :UpdateTweet }
     let(:request) { { id: tweet.id, body: 'bar foo' } }
 
     include_examples 'an unauthenticated request'

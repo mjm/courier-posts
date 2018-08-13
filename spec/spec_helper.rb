@@ -24,6 +24,8 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
+  config.extend Courier::RPCHelpers, rpc: true
+
   config.around(:each) do |example|
     DB.transaction(rollback: :always, auto_savepoint: true) do
       example.run
