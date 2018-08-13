@@ -1,3 +1,5 @@
+require 'shared_examples'
+
 RSpec.describe PostsHandler do
   subject { App }
 
@@ -10,21 +12,10 @@ RSpec.describe PostsHandler do
     let(:request) { { user_id: 123 } }
     let(:response) { subject.call_rpc(:GetUserPosts, request, env) }
 
-    context 'when no auth token is provided' do
-      it 'returns an unauthenticated response' do
-        expect(response).to be_a_twirp_error :unauthenticated
-      end
-    end
+    include_examples 'an unauthenticated request'
+    include_examples 'a request from another user'
 
     context 'when an auth token is provided' do
-      context 'and the token does not match the user whose posts were requested' do
-        let(:env) { { token: other_token } }
-
-        it 'returns a forbidden response' do
-          expect(response).to be_a_twirp_error :permission_denied
-        end
-      end
-
       context 'and the token matches the user whose posts were requested' do
         let(:env) { { token: token } }
         let(:posts) { response.posts }
@@ -91,13 +82,9 @@ RSpec.describe PostsHandler do
     let(:request) { { id: post.id } }
     let(:response) { subject.call_rpc(:GetPost, request, env) }
 
-    context 'when no auth token is provided' do
-      it 'returns an unauthenticated error' do
-        expect(response).to be_a_twirp_error :unauthenticated
-      end
-    end
+    include_examples 'an unauthenticated request'
 
-    context 'when a token for a different user is provided' do
+    context 'when an auth token for a different user is provided' do
       let(:env) { { token: other_token } }
 
       it 'returns a not found error' do
@@ -148,21 +135,10 @@ RSpec.describe PostsHandler do
     end
     let(:response) { subject.call_rpc(:ImportPost, request, env) }
 
-    context 'when no auth token is provided' do
-      it 'returns an unauthenticated response' do
-        expect(response).to be_a_twirp_error :unauthenticated
-      end
-    end
+    include_examples 'an unauthenticated request'
+    include_examples 'a request from another user'
 
     context 'when an auth token is provided' do
-      context 'and the token does not match the user id in the request' do
-        let(:env) { { token: other_token } }
-
-        it 'returns a forbidden response' do
-          expect(response).to be_a_twirp_error :permission_denied
-        end
-      end
-
       context 'and the auth token is for another microservice' do
         let(:token) { Token.new('sub' => 'courier-feeds', 'roles' => ['service']) }
         let(:env) { { token: token } }
@@ -265,21 +241,10 @@ RSpec.describe PostsHandler do
     let(:request) { { id: tweet.id } }
     let(:response) { subject.call_rpc(:CancelTweet, request, env) }
 
-    context 'when no auth token is provided' do
-      it 'returns an unauthenticated response' do
-        expect(response).to be_a_twirp_error :unauthenticated
-      end
-    end
+    include_examples 'an unauthenticated request'
+    include_examples 'a request from another user'
 
     context 'when an auth token is provided' do
-      context "and the token does not match the user id of the tweet's post" do
-        let(:env) { { token: other_token } }
-
-        it 'returns a forbidden response' do
-          expect(response).to be_a_twirp_error :permission_denied
-        end
-      end
-
       context 'and the tweet does not exist' do
         let(:request) { { id: tweet.id + 1 } }
         let(:env) { { token: other_token } }
@@ -319,21 +284,10 @@ RSpec.describe PostsHandler do
     let(:request) { { id: tweet.id, body: 'bar foo' } }
     let(:response) { subject.call_rpc(:UpdateTweet, request, env) }
 
-    context 'when no auth token is provided' do
-      it 'returns an unauthenticated response' do
-        expect(response).to be_a_twirp_error :unauthenticated
-      end
-    end
+    include_examples 'an unauthenticated request'
+    include_examples 'a request from another user'
 
     context 'when an auth token is provided' do
-      context "and the token does not match the user id of the tweet's post" do
-        let(:env) { { token: other_token } }
-
-        it 'returns a forbidden response' do
-          expect(response).to be_a_twirp_error :permission_denied
-        end
-      end
-
       context 'and the tweet does not exist' do
         let(:request) { { id: tweet.id + 1 } }
         let(:env) { { token: other_token } }
