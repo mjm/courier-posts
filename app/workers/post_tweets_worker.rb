@@ -8,6 +8,7 @@ class PostTweetsWorker
 
     @tweets = Tweet.where(id: tweet_ids)
     tweets.each do |tweet|
+      next if tweet.status != 'DRAFT'
       tweet.update status: 'POSTED'
     end
   end

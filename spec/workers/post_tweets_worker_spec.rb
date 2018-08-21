@@ -20,4 +20,34 @@ RSpec.describe PostTweetsWorker do
     subject.perform(ids)
     expect(tweets.each(&:refresh).map(&:status)).to all(eq 'POSTED')
   end
+
+  context 'when the tweet is canceled' do
+    before do
+      tweets.first.tap do |t|
+        t.update status: 'CANCELED'
+        t.refresh
+      end
+    end
+
+    it 'does not update the status of the canceled tweet' do
+      subject.perform(ids)
+      expect(tweets.first.refresh.status).to eq 'CANCELED'
+    end
+  end
+
+  context 'when the tweet is already posted' do
+    before do
+      tweets.first.tap do |t|
+        t.update status: 'POSTED'
+        t.refresh
+      end
+    end
+
+    # I know this is kind of trivial. We'll have a better way to check this
+    # when the real work is happening.
+    it 'does not update the status of the canceled tweet' do
+      subject.perform(ids)
+      expect(tweets.first.refresh.status).to eq 'POSTED'
+    end
+  end
 end
