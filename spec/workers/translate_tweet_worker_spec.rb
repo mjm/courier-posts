@@ -29,6 +29,13 @@ RSpec.describe TranslateTweetWorker do
         body: 'This is a tweet'
       )
     end
+
+    it 'enqueues a job to post the tweet in five minutes' do
+      subject.perform(post.id)
+      tweet_id = post.tweets.first.id
+      expect(PostTweetsWorker).to have_enqueued_sidekiq_job([tweet_id])
+      # TODO: test the timing once I find a non-buggy way to do it
+    end
   end
 
   context 'when the post already has a tweet' do
