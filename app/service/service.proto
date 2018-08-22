@@ -17,6 +17,9 @@ service Posts {
 
   /// Updates the content of a tweet before posting it.
   rpc UpdateTweet(UpdateTweetRequest) returns (PostTweet);
+
+  /// Posts the tweet to twitter.
+  rpc SubmitTweet(PostTweetRequest) returns (PostTweet);
 }
 
 /// Request message for listing posts for a user.
@@ -54,6 +57,12 @@ message UpdateTweetRequest {
   int64 id = 1;
   /// The new body of the tweet.
   string body = 2;
+}
+
+/// Request message for posting a tweet to Twitter.
+message PostTweetRequest {
+  /// The ID of the tweet to post.
+  int64 id = 1;
 }
 
 /// Message containing a list of multiple Posts.

@@ -51,6 +51,18 @@ class PostsHandler
       end
     end
   end
+
+  def submit_tweet(req, env)
+    require_token env do
+      tweet = Tweet[req.id]
+      return Twirp::Error.not_found 'No tweet found' unless tweet
+
+      require_user env, id: tweet.post.user_id do
+        PostTweetsWorker.perform_async([tweet.id])
+        tweet.to_proto
+      end
+    end
+  end
 end
 
 App = Courier::PostsService.new(PostsHandler.new)

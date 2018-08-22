@@ -296,4 +296,41 @@ RSpec.describe PostsHandler, rpc: true do
       end
     end
   end
+
+  describe '#submit_tweet' do
+    rpc_method :SubmitTweet
+
+    let(:post) do
+      Post.import(123,
+                  item_id: 'abc', feed_id: 1,
+                  content_text: 'foo', url: 'foo')
+    end
+    let!(:tweet) { post.add_tweet(body: 'foo bar') }
+    let(:request) { { id: tweet.id } }
+
+    include_examples 'an unauthenticated request'
+    include_examples 'a request from another user'
+
+    it 'enqueues a job to post the tweet' do
+      response
+      expect(PostTweetsWorker).to have_enqueued_sidekiq_job([tweet.id])
+    end
+
+    it 'returns a description of the tweet' do
+      expect(response).to eq Courier::PostTweet.new(
+        id: tweet.id,
+        post_id: post.id,
+        body: 'foo bar'
+      )
+    end
+
+    context 'when the tweet does not exist' do
+      let(:request) { { id: tweet.id + 1 } }
+      let(:token) { other_token }
+
+      it 'returns a not found response' do
+        expect(response).to be_a_twirp_error :not_found
+      end
+    end
+  end
 end
