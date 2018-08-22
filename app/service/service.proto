@@ -19,7 +19,7 @@ service Posts {
   rpc UpdateTweet(UpdateTweetRequest) returns (PostTweet);
 
   /// Posts the tweet to twitter.
-  rpc SubmitTweet(PostTweetRequest) returns (PostTweet);
+  rpc SubmitTweet(SubmitTweetRequest) returns (PostTweet);
 }
 
 /// Request message for listing posts for a user.
@@ -60,7 +60,7 @@ message UpdateTweetRequest {
 }
 
 /// Request message for posting a tweet to Twitter.
-message PostTweetRequest {
+message SubmitTweetRequest {
   /// The ID of the tweet to post.
   int64 id = 1;
 }

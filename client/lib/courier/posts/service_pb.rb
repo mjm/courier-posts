@@ -21,7 +21,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     optional :id, :int64, 1
     optional :body, :string, 2
   end
-  add_message "courier.PostTweetRequest" do
+  add_message "courier.SubmitTweetRequest" do
     optional :id, :int64, 1
   end
   add_message "courier.PostList" do
@@ -58,7 +58,7 @@ module Courier
   ImportPostRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("courier.ImportPostRequest").msgclass
   CancelTweetRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("courier.CancelTweetRequest").msgclass
   UpdateTweetRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("courier.UpdateTweetRequest").msgclass
-  PostTweetRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("courier.PostTweetRequest").msgclass
+  SubmitTweetRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("courier.SubmitTweetRequest").msgclass
   PostList = Google::Protobuf::DescriptorPool.generated_pool.lookup("courier.PostList").msgclass
   Post = Google::Protobuf::DescriptorPool.generated_pool.lookup("courier.Post").msgclass
   PostTweet = Google::Protobuf::DescriptorPool.generated_pool.lookup("courier.PostTweet").msgclass
