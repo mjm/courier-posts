@@ -10,3 +10,9 @@ end
 
 Sequel.default_timezone = :utc
 DB.extension :pg_enum
+
+MessageQueue = Struct.new(:conn).new
+unless RACK_ENV == :test
+  MessageQueue.conn = Bunny.new ENV['CLOUDAMQP_URL']
+  MessageQueue.conn.start
+end

@@ -31,4 +31,8 @@ RSpec.configure do |config|
       example.run
     end
   end
+
+  config.before(:each) do
+    MessageQueue.conn = BunnyMock.new.start
+  end
 end

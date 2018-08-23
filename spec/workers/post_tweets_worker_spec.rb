@@ -21,6 +21,20 @@ RSpec.describe PostTweetsWorker do
     expect(tweets.each(&:refresh).map(&:status)).to all(eq 'POSTED')
   end
 
+  let(:channel) { MessageQueue.conn.create_channel }
+  let(:exchange) { channel.direct('events.posts') }
+  let(:queue) do
+    channel.queue('', exclusive: true).bind(exchange)
+  end
+
+  it 'sends the updated tweets to the message broker' do
+    queue # the queue needs to exist before the message is sent
+    subject.perform(ids)
+    messages = queue.all.map { |payload| payload[:message] }
+    expect(messages.size).to eq 3
+    expect(messages.map { |m| Courier::PostTweet.decode(m) }).to all(be_a(Courier::PostTweet))
+  end
+
   context 'when the tweet is canceled' do
     before do
       tweets.first.tap do |t|

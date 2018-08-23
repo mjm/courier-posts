@@ -3,6 +3,7 @@ ruby '2.5.1'
 
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
+gem 'bunny'
 gem 'courier-service', github: 'mjm/courier-service'
 gem 'courier-translator', github: 'mjm/courier-translator', glob: 'client/*.gemspec'
 gem 'jwt'
@@ -19,6 +20,7 @@ group :development do
 end
 
 group :test do
+  gem 'bunny-mock'
   gem 'rspec', '~> 3.0'
   gem 'rspec-sidekiq'
   gem 'webmock', require: 'webmock/rspec'
