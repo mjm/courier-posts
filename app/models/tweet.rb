@@ -10,7 +10,8 @@ class Tweet < Sequel::Model(DB[:tweets])
       id: id,
       post_id: post_id,
       body: body,
-      status: status
+      status: status,
+      user_id: post.user_id
     )
   end
 end

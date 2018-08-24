@@ -122,4 +122,6 @@ message PostTweet {
 
   /// The status of the tweet.
   Status status = 4;
+  /// The user ID of the user this tweet belongs to.
+  int32 user_id = 5;
 }

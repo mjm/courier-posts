@@ -236,7 +236,8 @@ RSpec.describe PostsHandler, rpc: true do
         id: tweet.id,
         post_id: post.id,
         body: 'foo bar',
-        status: :CANCELED
+        status: :CANCELED,
+        user_id: 123
       )
     end
 
@@ -273,7 +274,8 @@ RSpec.describe PostsHandler, rpc: true do
       expect(response).to eq Courier::PostTweet.new(
         id: tweet.id,
         post_id: post.id,
-        body: 'bar foo'
+        body: 'bar foo',
+        user_id: 123
       )
     end
 
@@ -320,7 +322,8 @@ RSpec.describe PostsHandler, rpc: true do
       expect(response).to eq Courier::PostTweet.new(
         id: tweet.id,
         post_id: post.id,
-        body: 'foo bar'
+        body: 'foo bar',
+        user_id: 123
       )
     end
 

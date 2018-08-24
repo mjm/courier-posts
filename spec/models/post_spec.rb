@@ -117,12 +117,14 @@ RSpec.describe Post do
           Courier::PostTweet.new(
             id: subject.tweets[0].id,
             post_id: subject.id,
-            body: 'Foo'
+            body: 'Foo',
+            user_id: 123
           ),
           Courier::PostTweet.new(
             id: subject.tweets[1].id,
             post_id: subject.id,
-            body: 'Bar'
+            body: 'Bar',
+            user_id: 123
           )
         ]
       )
