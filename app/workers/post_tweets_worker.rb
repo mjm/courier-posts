@@ -4,11 +4,12 @@ class PostTweetsWorker
   attr_reader :tweets
 
   def perform(tweet_ids)
-    # TODO: actually post the tweet
-
     @tweets = Tweet.where(id: tweet_ids)
     tweets.each do |tweet|
       next if tweet.status != 'DRAFT'
+
+      tweeter_client.post_tweet(user_id: tweet.post.user_id, body: tweet.body)
+
       tweet.update status: 'POSTED'
       broadcast tweet
     end
@@ -23,5 +24,11 @@ class PostTweetsWorker
   def broadcast(tweet)
     x = message_channel.direct('events.posts')
     x.publish(Courier::PostTweet.encode(tweet.to_proto))
+  end
+
+  def tweeter_client
+    @tweeter_client ||= Courier::TweeterClient.connect(
+      token: Courier::Service::TOKEN
+    )
   end
 end

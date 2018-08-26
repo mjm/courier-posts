@@ -6,6 +6,7 @@ git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 gem 'bunny'
 gem 'courier-service', github: 'mjm/courier-service'
 gem 'courier-translator', github: 'mjm/courier-translator', glob: 'client/*.gemspec'
+gem 'courier-tweeter', github: 'mjm/courier-tweeter', glob: 'client/*.gemspec'
 gem 'jwt'
 gem 'pg'
 gem 'puma'

@@ -16,6 +16,16 @@ GIT
       twirp
       typhoeus
 
+GIT
+  remote: https://github.com/mjm/courier-tweeter
+  revision: 9a5b7f1176f232756ce6dee7fbb654a7f2c6f588
+  glob: client/*.gemspec
+  specs:
+    courier-tweeter (0.0.1)
+      jwt
+      twirp
+      typhoeus
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -92,6 +102,7 @@ DEPENDENCIES
   bunny-mock
   courier-service!
   courier-translator!
+  courier-tweeter!
   jwt
   pg
   pry

@@ -15,6 +15,19 @@ RSpec.describe PostTweetsWorker do
     ]
   end
   let(:ids) { tweets.map(&:id) }
+  let(:tweeter) { instance_double('Courier::TweeterClient') }
+  before do
+    allow(Courier::TweeterClient).to receive(:connect) { tweeter }
+    allow(tweeter).to receive(:post_tweet)
+  end
+
+  it 'sends the tweets to the tweeter service' do
+    subject.perform(ids)
+    expect(tweeter).to have_received(:post_tweet).with(
+      user_id: 123,
+      body: "ABC it's easy"
+    )
+  end
 
   it 'moves the tweets to the posted status' do
     subject.perform(ids)
@@ -46,6 +59,14 @@ RSpec.describe PostTweetsWorker do
     it 'does not update the status of the canceled tweet' do
       subject.perform(ids)
       expect(tweets.first.refresh.status).to eq 'CANCELED'
+    end
+
+    it 'does not post the tweet' do
+      subject.perform(ids)
+      expect(tweeter).not_to have_received(:post_tweet).with(
+        user_id: 123,
+        body: "ABC it's easy"
+      )
     end
   end
 
