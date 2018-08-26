@@ -43,6 +43,9 @@ message ImportPostRequest {
   int32 user_id = 1;
   /// The post information to import.
   Post post = 2;
+  /// The delay before the posts will be automatically cross-posted to Twitter.
+  //  A value of 0 means the post will not be posted without user-intervention.
+  int32 autopost_delay = 3;
 }
 
 /// Request message for canceling a tweet from being posted.

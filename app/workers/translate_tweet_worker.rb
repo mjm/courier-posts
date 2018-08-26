@@ -3,7 +3,7 @@ class TranslateTweetWorker
 
   attr_reader :post
 
-  def perform(post_id)
+  def perform(post_id, autopost_delay)
     @post = Post[post_id]
     return unless post.tweets.empty?
 
@@ -12,7 +12,9 @@ class TranslateTweetWorker
       post.add_tweet(body: tweet.body)
     end
 
-    PostTweetsWorker.perform_in(5 * 60, created_tweets.map(&:id))
+    if autopost_delay > 0
+      PostTweetsWorker.perform_in(autopost_delay, created_tweets.map(&:id))
+    end
   end
 
   private

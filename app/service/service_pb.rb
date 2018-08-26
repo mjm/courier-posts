@@ -13,6 +13,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
   add_message "courier.ImportPostRequest" do
     optional :user_id, :int32, 1
     optional :post, :message, 2, "courier.Post"
+    optional :autopost_delay, :int32, 3
   end
   add_message "courier.CancelTweetRequest" do
     optional :id, :int64, 1

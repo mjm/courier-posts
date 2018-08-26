@@ -23,12 +23,14 @@ class Post < Sequel::Model(DB[:posts])
 
   class << self
     def import(user_id, attrs)
+      attrs = attrs.dup
+      autopost_delay = attrs.delete(:autopost_delay) || 0
       insert_attrs, update_attrs = upsert_attributes user_id, attrs
       result = dataset.returning
                       .insert_conflict(constraint: :unique_posts,
                                        update: update_attrs)
                       .insert_select(insert_attrs)
-      TranslateTweetWorker.perform_async(result.id)
+      TranslateTweetWorker.perform_async(result.id, autopost_delay)
       result
     end
 

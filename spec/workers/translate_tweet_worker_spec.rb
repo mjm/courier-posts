@@ -19,22 +19,30 @@ RSpec.describe TranslateTweetWorker do
     it 'asks the translator service for the tweet text' do
       expect(translator).to receive(:translate)
         .with(content_html: '<p>This is a tweet</p>')
-      subject.perform(post.id)
+      subject.perform(post.id, 300)
     end
 
     it 'creates a tweet for the post with the translated text' do
-      subject.perform(post.id)
+      subject.perform(post.id, 300)
       expect(post.tweets.count).to eq 1
       expect(post.tweets.first).to have_attributes(
         body: 'This is a tweet'
       )
     end
 
-    it 'enqueues a job to post the tweet in five minutes' do
-      subject.perform(post.id)
+    it 'enqueues a job to post the tweet in the specified time' do
+      subject.perform(post.id, 300)
       tweet_id = post.tweets.first.id
       expect(PostTweetsWorker).to have_enqueued_sidekiq_job([tweet_id])
       # TODO: test the timing once I find a non-buggy way to do it
+    end
+
+    context 'when the post should not be autoposted' do
+      it 'does not enqueue a job to post the tweet' do
+        subject.perform(post.id, 0)
+        tweet_id = post.tweets.first.id
+        expect(PostTweetsWorker).not_to have_enqueued_sidekiq_job([tweet_id])
+      end
     end
   end
 
@@ -44,7 +52,7 @@ RSpec.describe TranslateTweetWorker do
     end
 
     it 'does not create a new tweet' do
-      expect { subject.perform(post.id) }
+      expect { subject.perform(post.id, 300) }
         .not_to(change { post.tweets(reload: true).count })
     end
   end

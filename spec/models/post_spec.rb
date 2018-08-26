@@ -9,7 +9,8 @@ RSpec.describe Post do
                   title: '',
                   published_at: '2018-07-20T19:14:38+00:00',
                   modified_at: '2018-07-20T19:14:38+00:00',
-                  url: 'https://example.com/abc')
+                  url: 'https://example.com/abc',
+                  autopost_delay: 300)
     end
 
     context 'when the post does not already exist' do
@@ -33,7 +34,7 @@ RSpec.describe Post do
 
       it 'enqueues a job to translate the post into a tweet' do
         post_id = subject.id
-        expect(TranslateTweetWorker).to have_enqueued_sidekiq_job(post_id)
+        expect(TranslateTweetWorker).to have_enqueued_sidekiq_job(post_id, 300)
       end
     end
 

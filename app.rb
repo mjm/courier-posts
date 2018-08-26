@@ -21,7 +21,8 @@ class PostsHandler
 
   def import_post(req, env)
     require_user env, id: req.user_id, allow_service: true do
-      post = Post.import(req.user_id, req.post.to_h)
+      post = Post.import(req.user_id,
+                         req.post.to_h.merge(autopost_delay: req.autopost_delay))
       post.to_proto
     end
   end
