@@ -18,7 +18,7 @@ GIT
 
 GIT
   remote: https://github.com/mjm/courier-tweeter
-  revision: 9a5b7f1176f232756ce6dee7fbb654a7f2c6f588
+  revision: a5885321f08e62af100ec73480c499700d78ae0a
   glob: client/*.gemspec
   specs:
     courier-tweeter (0.0.1)
