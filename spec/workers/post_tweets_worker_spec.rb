@@ -18,7 +18,9 @@ RSpec.describe PostTweetsWorker do
   let(:tweeter) { instance_double('Courier::TweeterClient') }
   before do
     allow(Courier::TweeterClient).to receive(:connect) { tweeter }
-    allow(tweeter).to receive(:post_tweet)
+    allow(tweeter).to receive(:post_tweet) do
+      double(data: Courier::Tweet.new(id: '123456', text: 'foo bar'))
+    end
   end
 
   it 'sends the tweets to the tweeter service' do
@@ -32,6 +34,16 @@ RSpec.describe PostTweetsWorker do
   it 'moves the tweets to the posted status' do
     subject.perform(ids)
     expect(tweets.each(&:refresh).map(&:status)).to all(eq 'POSTED')
+  end
+
+  it 'saves the timestamp when the tweet was posted' do
+    subject.perform(ids)
+    expect(tweets.each(&:refresh).map(&:posted_at)).not_to include(be_nil)
+  end
+
+  it 'saves the ID of the tweet for linking to later' do
+    subject.perform(ids)
+    expect(tweets.each(&:refresh).map(&:posted_tweet_id)).to all(eq '123456')
   end
 
   let(:channel) { MessageQueue.conn.create_channel }

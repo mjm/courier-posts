@@ -8,9 +8,14 @@ class PostTweetsWorker
     tweets.each do |tweet|
       next if tweet.status != 'DRAFT'
 
-      tweeter_client.post_tweet(user_id: tweet.post.user_id, body: tweet.body)
+      resp = tweeter_client.post_tweet(user_id: tweet.post.user_id,
+                                       body: tweet.body)
 
-      tweet.update status: 'POSTED'
+      tweet.update(
+        status: 'POSTED',
+        posted_at: Time.now,
+        posted_tweet_id: resp.data.id
+      )
       broadcast tweet
     end
   end

@@ -11,7 +11,9 @@ class Tweet < Sequel::Model(DB[:tweets])
       post_id: post_id,
       body: body,
       status: status,
-      user_id: post.user_id
+      user_id: post.user_id,
+      posted_at: posted_at ? posted_at.getutc.iso8601 : '',
+      posted_tweet_id: posted_tweet_id || ''
     )
   end
 end

@@ -127,4 +127,8 @@ message PostTweet {
   Status status = 4;
   /// The user ID of the user this tweet belongs to.
   int32 user_id = 5;
+  /// The date the tweet was posted to Twitter, as an ISO 8601 date string.
+  string posted_at = 6;
+  /// The ID of the posted tweet on Twitter.
+  string posted_tweet_id = 7;
 }

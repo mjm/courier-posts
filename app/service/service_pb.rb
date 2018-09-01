@@ -46,6 +46,8 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     optional :body, :string, 3
     optional :status, :enum, 4, "courier.PostTweet.Status"
     optional :user_id, :int32, 5
+    optional :posted_at, :string, 6
+    optional :posted_tweet_id, :string, 7
   end
   add_enum "courier.PostTweet.Status" do
     value :DRAFT, 0
